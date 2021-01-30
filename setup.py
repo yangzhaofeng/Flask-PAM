@@ -2,7 +2,7 @@
 from setuptools import setup
 
 setup(name='Flask-PAM-Reloaded',
-      version='0.1.3',
+      version='0.1.5',
       description='Flask authentication using PAM',
       author='Kacper Kołodziej, Steven Yang',
       author_email='yangzhaofengsteven@gmail.com',

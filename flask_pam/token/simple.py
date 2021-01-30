@@ -11,4 +11,4 @@ class Simple(Token):
 
     def generate(self):
         log.info("Generating Simple token for user '%s'", self.username)
-        return sha256(self.username + str(self.context)).hexdigest()
+        return sha256(self.username + str(self.context).encode('utf-8')).hexdigest()
