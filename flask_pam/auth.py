@@ -81,10 +81,10 @@ class Auth(object):
                 log.info("Refresh token will be valid to %s", refresh_expire.strftime('%c'))
 
             token = self.token_type(self.app.secret_key, username, expire, **token_context)
-            token.context['salt'] = urandom(120).encode('base-64')
+            token.context['salt'] = b64encode(urandom(120))
 
             refresh_context = token_context.copy()
-            refresh_context['refresh_salt'] = urandom(120).encode('base-64')
+            refresh_context['refresh_salt'] = b64encode(urandom(120))
             refresh_token = self.token_type(self.app.secret_key, username, refresh_expire, **refresh_context)
 
             self.token_storage.set(token)
@@ -101,7 +101,7 @@ class Auth(object):
         refresh = self.refresh_token_storage.get(token)
         if refresh:
             expire = datetime.now() + timedelta(seconds=self.token_lifetime)
-            refresh.context['refresh_salt'] = urandom(120).encode('base-64')
+            refresh.context['refresh_salt'] = b64encode(urandom(120))
             new_token = self.token_type(self.app.secret_key, refresh.username, expire, **refresh.context)
             self.token_storage.set(new_token)
 
