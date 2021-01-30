@@ -3,6 +3,7 @@
 import simplepam
 import grp
 import functools
+import base64
 from datetime import datetime, timedelta
 from flask import request, abort
 from os import urandom
@@ -81,10 +82,10 @@ class Auth(object):
                 log.info("Refresh token will be valid to %s", refresh_expire.strftime('%c'))
 
             token = self.token_type(self.app.secret_key, username, expire, **token_context)
-            token.context['salt'] = b64encode(urandom(120))
+            token.context['salt'] = base64.b64encode(urandom(120))
 
             refresh_context = token_context.copy()
-            refresh_context['refresh_salt'] = b64encode(urandom(120))
+            refresh_context['refresh_salt'] = base64.b64encode(urandom(120))
             refresh_token = self.token_type(self.app.secret_key, username, refresh_expire, **refresh_context)
 
             self.token_storage.set(token)
@@ -101,7 +102,7 @@ class Auth(object):
         refresh = self.refresh_token_storage.get(token)
         if refresh:
             expire = datetime.now() + timedelta(seconds=self.token_lifetime)
-            refresh.context['refresh_salt'] = b64encode(urandom(120))
+            refresh.context['refresh_salt'] = base64.b64encode(urandom(120))
             new_token = self.token_type(self.app.secret_key, refresh.username, expire, **refresh.context)
             self.token_storage.set(new_token)
 
