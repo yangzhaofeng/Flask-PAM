@@ -35,7 +35,7 @@ tokens and type of token:
     app = Flask(__name__)
     auth = Auth(DictStorage, Simple, app)
 
-When you write a view which requires authentication, you have to use
+<s>When you write a view which requires authentication, you have to use
 `auth_required` decorator:
 
     @app.route('/protected')
@@ -50,11 +50,15 @@ When you want to require user to be a member of some group, you use
     @auth.group_protected('wheel')
     def group_protected_view():
         ....
+</s>
 
-***Important!*** User who runs Flask application need to have access to
+Please use [Flask-Login](https://flask-login.readthedocs.io/) instead.
+
+<s>***Important!*** User who runs Flask application need to have access to
 `/etc/shadow` file. In some cases it's only needed to add that user to `shadow`
 group. Sometimes you have to create that group and change group of `/etc/shadow`
-file and then add user to that group.
+file and then add user to that group.</s> If your system has full libpam support,
+access to `/etc/shadow` is not required.
 
 ## Example 
 
